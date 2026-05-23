@@ -171,6 +171,11 @@ Symbol read_symbol(const uint8_t *equation, unsigned index, unsigned length, str
         return equation[index];
     }
 
+    if(equation[index] >= 'a' && equation[index] <= 'z') {
+        *consumed = 1;
+        return equation[index] - 'a' + 'A';
+    }
+
     switch(read_type(equation, index, length, lookup, consumed)) {
     case TOK_IMAG:  return SYM_IMAG;
     case TOK_EULER: return SYM_EULER;
