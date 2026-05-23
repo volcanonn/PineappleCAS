@@ -7,7 +7,8 @@
 #define ID_MAX_TEXT 50
 
 typedef struct {
-    char from_text[ID_MAX_TEXT], to_text[ID_MAX_TEXT];
+    const char *from_text;
+    const char *to_text;
     pcas_ast_t *from, *to;
 } pcas_id_t;
 
