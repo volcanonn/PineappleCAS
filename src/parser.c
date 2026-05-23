@@ -164,6 +164,17 @@ TokenType read_type(const uint8_t *equation, unsigned index, unsigned length, st
 }
 
 Symbol read_symbol(const uint8_t *equation, unsigned index, unsigned length, struct Identifier *lookup, unsigned *consumed) {
+    TokenType type = read_type(equation, index, length, lookup, consumed);
+
+    if(type != TOK_INVALID) {
+        switch(type) {
+        case TOK_IMAG:  return SYM_IMAG;
+        case TOK_EULER: return SYM_EULER;
+        case TOK_PI:    return SYM_PI;
+        case TOK_THETA: return SYM_THETA;
+        default:        return SYM_INVALID;
+        }
+    }
 
     /*Symbol letter enum values are mapped to their ascii code (SYM_B == 'B')*/
     if(equation[index] >= 'A' && equation[index] <= 'Z') {
@@ -176,14 +187,7 @@ Symbol read_symbol(const uint8_t *equation, unsigned index, unsigned length, str
         return equation[index] - 'a' + 'A';
     }
 
-    switch(read_type(equation, index, length, lookup, consumed)) {
-    case TOK_IMAG:  return SYM_IMAG;
-    case TOK_EULER: return SYM_EULER;
-    case TOK_PI:    return SYM_PI;
-    case TOK_THETA: return SYM_THETA;
-    default:        return SYM_INVALID;
-    }
-
+    return SYM_INVALID;
 }
 
 token_t read_token(const uint8_t *equation, unsigned index, unsigned length, struct Identifier *lookup, unsigned *consumed) {
